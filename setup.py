@@ -64,7 +64,7 @@ setup(
 
     cmdclass={'import_cldr': import_cldr},
 
-    zip_safe=False,
+    zip_safe=True,
 
     # Note when adding extractors: builtin extractors we also want to
     # work if packages are not installed to simplify testing.  If you
