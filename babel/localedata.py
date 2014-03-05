@@ -17,7 +17,7 @@ import threading
 from collections import MutableMapping
 from itertools import chain
 
-from babel._compat import pickle
+from babel._compat import pickle, zipopen, zipexists
 
 
 _cache = {}
@@ -46,7 +46,7 @@ def exists(name):
     """
     if name in _cache:
         return True
-    file_found = os.path.exists(os.path.join(_dirname, '%s.dat' % name))
+    file_found = zipexists(os.path.join(_dirname, '%s.dat' % name))
     return True if file_found else bool(normalize_locale(name))
 
 
@@ -106,7 +106,7 @@ def load(name, merge_inherited=True):
                         parent = '_'.join(parts[:-1])
                 data = load(parent).copy()
             filename = os.path.join(_dirname, '%s.dat' % name)
-            fileobj = open(filename, 'rb')
+            fileobj = zipopen(filename, 'rb')
             try:
                 if name != 'root' and merge_inherited:
                     merge(data, pickle.load(fileobj))
